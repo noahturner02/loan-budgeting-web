@@ -82,16 +82,33 @@
           >awesome-vue</a
         >
       </li>
+      <li>
+        <router-link to="/sandbox">
+          <p>Party?</p>
+        </router-link>
+      </li>
     </ul>
+  </div>
+  <div class="mt-3">
+    <v-btn @click="goToSignupPage">Sign Up</v-btn>
   </div>
 </template>
 
 <script>
+import { VBtn } from "vuetify/lib/components/index.mjs";
 export default {
   name: "HelloWorld",
-  props: {
-    msg: String,
+  components: {
+    VBtn
   },
+  props: {
+    msg: String
+  },
+  methods: {
+    goToSignupPage() {
+      this.$router.replace("/signup");
+    }
+  }
 };
 </script>
 
