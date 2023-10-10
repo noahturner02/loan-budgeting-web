@@ -27,6 +27,12 @@
             :error-messages="v$.phoneNumber.$errors.map((e) => e.$message)"
           ></v-text-field>
           <v-text-field
+            v-model="username"
+            class="formfield"
+            label="Username"
+            :error-messages="v$.username.$errors.map((e) => e.$message)"
+          ></v-text-field>
+          <v-text-field
             v-model="password"
             class="formfield"
             label="Password"
@@ -93,6 +99,7 @@ export default {
       firstName: undefined,
       lastName: undefined,
       phoneNumber: undefined,
+      username: undefined,
       password: undefined,
       verifyPassword: undefined,
       address: undefined,
@@ -113,6 +120,7 @@ export default {
       firstName: { required },
       lastName: { required },
       phoneNumber: { required, minLength: minLength(10) },
+      username: { required, minLength: minLength(5) },
       password: {
         required,
         minLength: minLength(10)
