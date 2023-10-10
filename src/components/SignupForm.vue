@@ -1,5 +1,5 @@
 <template>
-  <v-container class="d-flex justify-center" style="row-gap: 50px">
+  <v-container class="d-flex justify-center" style="row-gap: 50px" fluid>
     <v-card class="align-content-center pa-5" style="width: 40%">
       <v-card-title class="text-xl-center mb-3">Create Account</v-card-title>
       <v-form>
