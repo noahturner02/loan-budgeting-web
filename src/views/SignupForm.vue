@@ -11,12 +11,11 @@
 </template>
 
 <script>
-import { VForm, VTextField, VCard } from "vuetify/lib/components/index.mjs";
+import { VForm, VCard } from "vuetify/lib/components/index.mjs";
 export default {
   name: "SignupForm",
   components: {
     VForm,
-    VTextField,
     VCard
   }
 };
