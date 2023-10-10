@@ -59,7 +59,10 @@
             type="email"
             :error-messages="v$.email.$errors.map((e) => e.$message)"
           ></v-text-field>
-          <div class="d-flex justify-center" style="gap: 40px">
+          <div
+            class="d-flex justify-center"
+            style="gap: 40px; flex-wrap: wrap-reverse"
+          >
             <v-btn
               size="x-large"
               style="background-color: firebrick; width: 250px"

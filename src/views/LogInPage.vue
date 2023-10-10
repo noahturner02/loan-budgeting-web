@@ -1,5 +1,5 @@
 <template>
-  <v-container class="d-flex justify-center">
+  <v-container fluid class="d-flex justify-center">
     <v-card style="width: 50%">
       <v-card-title>Log In</v-card-title>
       <div
@@ -26,7 +26,10 @@
           @click="logIn"
           >Log In</v-btn
         >
-        <div class="d-flex justify-space-between mb-5" style="width: 70%">
+        <div
+          class="d-flex justify-space-between mb-5"
+          style="width: 70%; flex-wrap: wrap-reverse"
+        >
           <v-btn variant="text">Forgot Password?</v-btn>
           <v-btn variant="text" @click="toggleDialog">Create Account</v-btn>
         </div>
