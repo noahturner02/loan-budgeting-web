@@ -51,6 +51,7 @@ import {
 import SignupForm from "../components/SignupForm.vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
+import { customerLogin } from "@/api/api";
 
 export default {
   name: "LogInPage",
@@ -80,6 +81,7 @@ export default {
       const isFormCorrect = await this.v$.$validate();
       if (isFormCorrect) {
         console.log("Calling login API...");
+        const loginResponse = await customerLogin(this.username, this.password);
       }
     }
   },
