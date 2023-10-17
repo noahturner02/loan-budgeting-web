@@ -82,6 +82,12 @@ export default {
       if (isFormCorrect) {
         console.log("Calling login API...");
         const loginResponse = await customerLogin(this.username, this.password);
+        console.log(loginResponse);
+        if ('status' in loginResponse && loginResponse.status === 200) {
+          console.log('woohoo')
+        } else {
+          console.log('uh oh')
+        }
       }
     }
   },
