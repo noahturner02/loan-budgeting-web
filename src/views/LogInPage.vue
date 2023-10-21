@@ -56,6 +56,7 @@ import SignupForm from "../components/SignupForm.vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 import { customerLogin } from "@/api/api";
+import {useCustomerStore} from '../stores/customerStore'
 
 export default {
   name: "LogInPage",
@@ -69,7 +70,9 @@ export default {
     VAlert
   },
   setup() {
-    return { v$: useVuelidate() };
+    const customerStore = useCustomerStore();
+    return { v$: useVuelidate(), customerStore };
+    
   },
   data() {
     return {
@@ -88,9 +91,8 @@ export default {
       if (isFormCorrect) {
         console.log("Calling login API...");
         const loginResponse = await customerLogin(this.username, this.password);
-        console.log(loginResponse);
         if ('status' in loginResponse && loginResponse.status === 200) {
-          console.log(loginResponse.response);
+          this.customerStore.customerLogIn(loginResponse.data);
         } else {
           this.showAlert = true;
         }
