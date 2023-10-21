@@ -1,7 +1,7 @@
 const axios = require("axios");
 export async function customerLogin(username, password) {
   return axios
-    .post("https://budgetingapplication.azurewebsites.net/customer/login", {
+    .post("https://budgetingapplication.azurewebsites.net/customers/login", {
       username: username,
       password: password
     })

@@ -33,6 +33,9 @@
           <v-btn variant="text">Forgot Password?</v-btn>
           <v-btn variant="text" @click="toggleDialog">Create Account</v-btn>
         </div>
+        <div class="d-flex justify-center mb-5">
+          <v-alert v-show="showAlert" density="comfortable" color="#DF5454">Invalid Username / Password</v-alert>
+        </div>
       </div>
     </v-card>
   </v-container>
@@ -46,7 +49,8 @@ import {
   VDialog,
   VCard,
   VContainer,
-  VTextField
+  VTextField,
+  VAlert
 } from "vuetify/lib/components/index.mjs";
 import SignupForm from "../components/SignupForm.vue";
 import { useVuelidate } from "@vuelidate/core";
@@ -61,7 +65,8 @@ export default {
     SignupForm,
     VTextField,
     VCard,
-    VContainer
+    VContainer,
+    VAlert
   },
   setup() {
     return { v$: useVuelidate() };
@@ -70,7 +75,8 @@ export default {
     return {
       showDialog: false,
       username: undefined,
-      password: undefined
+      password: undefined,
+      showAlert: false,
     };
   },
   methods: {
@@ -84,9 +90,9 @@ export default {
         const loginResponse = await customerLogin(this.username, this.password);
         console.log(loginResponse);
         if ('status' in loginResponse && loginResponse.status === 200) {
-          console.log('woohoo')
+          console.log(loginResponse.response);
         } else {
-          console.log('uh oh')
+          this.showAlert = true;
         }
       }
     }
