@@ -93,11 +93,13 @@ export default {
         const loginResponse = await customerLogin(this.username, this.password);
         if ('status' in loginResponse && loginResponse.status === 200) {
           this.customerStore.customerLogIn(loginResponse.data);
+          this.showAlert = false;
+          console.log(this.customerStore.$state);
         } else {
           this.showAlert = true;
         }
       }
-    }
+    },
   },
   validations() {
     return {

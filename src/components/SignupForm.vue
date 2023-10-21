@@ -72,7 +72,7 @@
             <v-btn
               size="x-large"
               style="background-color: darkgreen; width: 250px"
-              @click="submitForm"
+              @click="signUp"
               >Create Account</v-btn
             >
           </div>
@@ -86,6 +86,8 @@
 import { VForm, VTextField, VCard } from "vuetify/lib/components/index.mjs";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength, sameAs } from "@vuelidate/validators";
+import { useCustomerStore } from '../stores/customerStore'
+import { customerRegister } from '../api/api'
 export default {
   name: "SignupForm",
   components: {
@@ -95,7 +97,8 @@ export default {
   },
   emits: ["exit"],
   setup() {
-    return { v$: useVuelidate() };
+    const customerStore = useCustomerStore();
+    return { v$: useVuelidate(), customerStore };
   },
   data() {
     return {
@@ -137,10 +140,22 @@ export default {
     };
   },
   methods: {
-    async submitForm() {
+    async signUp() {
       const isFormCorrect = await this.v$.$validate();
-      if (!isFormCorrect) {
-        console.log("Failed to submit. Validations failed!");
+      if (isFormCorrect) {
+        const signUpResponse = await customerRegister({
+          firstName: this.firstName,
+          lastName: this.lastName,
+          phoneNumber: this.phoneNumber,
+          username: this.username,
+          password: this.password,
+          address: this.address,
+          email: this.email
+        })
+        if ('status' in signUpResponse && signUpResponse.status === 200) {
+          this.customerStore.customerLogIn(signUpResponse.data);
+          console.log("Account Successfully Created! Please proceed to login, " + this.firstName);
+        }
       }
     }
   }
