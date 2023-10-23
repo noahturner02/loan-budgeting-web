@@ -1,6 +1,6 @@
 import { createWebHistory, createRouter } from "vue-router";
-import HelloWorld from "./../views/HelloWorld.vue";
 import Sandbox from "./../views/Sandbox.vue";
+import LogInPage from "./../views/LogInPage";
 import SignupForm from "./../views/SignupForm";
 import DashBoard from "./../views/DashBoard.vue";
 
@@ -8,7 +8,7 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: HelloWorld
+    redirect: "/login"
   },
   {
     path: "/sandbox",
@@ -16,9 +16,9 @@ const routes = [
     component: Sandbox
   },
   {
-    path: "/signup",
-    name: "SignupForm",
-    component: SignupForm
+    path: "/login",
+    name: "LogInPage",
+    component: LogInPage
   },
   {
     path: "/dashboard",

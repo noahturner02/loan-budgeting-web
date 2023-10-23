@@ -106,7 +106,7 @@ export default {
   },
   methods: {
     goToSignupPage() {
-      this.$router.replace("/signup");
+      this.$router.replace("/login");
     }
   }
 };
