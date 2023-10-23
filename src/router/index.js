@@ -1,6 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 import Sandbox from "./../views/Sandbox.vue";
 import LogInPage from "./../views/LogInPage";
+import DashBoard from "./../views/DashBoard.vue";
 
 const routes = [
   {
@@ -17,6 +18,11 @@ const routes = [
     path: "/login",
     name: "LogInPage",
     component: LogInPage
+  },
+  {
+    path: "/dashboard",
+    name: "DashBoard",
+    component: DashBoard
   }
 ];
 
