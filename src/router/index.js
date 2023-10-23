@@ -1,7 +1,6 @@
 import { createWebHistory, createRouter } from "vue-router";
 import Sandbox from "./../views/Sandbox.vue";
 import LogInPage from "./../views/LogInPage";
-import SignupForm from "./../views/SignupForm";
 import DashBoard from "./../views/DashBoard.vue";
 
 const routes = [
