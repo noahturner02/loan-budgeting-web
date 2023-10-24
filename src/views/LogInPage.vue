@@ -95,6 +95,7 @@ export default {
           this.customerStore.customerLogIn(loginResponse.data);
           this.showAlert = false;
           console.log(this.customerStore.$state);
+          this.$router.push({name: 'DashBoard'});
         } else {
           this.showAlert = true;
         }
