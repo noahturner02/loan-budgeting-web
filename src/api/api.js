@@ -30,3 +30,4 @@ export async function customerRegister(customer) {
     return error
   });
 }
+

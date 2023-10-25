@@ -1,14 +1,15 @@
 import {defineStore} from 'pinia';
+import { useLocalStorage } from '@vueuse/core';
 export const useCustomerStore = defineStore('customer', {
     state: () => ({
-        loggedIn: false,
-        username: '',
-        password: '',
-        firstName: '',
-        lastName: '',
-        phoneNumber: '',
-        address: '',
-        email: ''
+        loggedIn: useLocalStorage('loggedIn', false),
+        username: useLocalStorage('username', ''),
+        password: useLocalStorage('password', ''),
+        firstName: useLocalStorage('firstName', ''),
+        lastName: useLocalStorage('lastName', ''),
+        phoneNumber: useLocalStorage('phoneNumber', ''),
+        address: useLocalStorage('address', ''),
+        email: useLocalStorage('email', '')
     }),
     actions: {
         customerLogIn(customer) {
