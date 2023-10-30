@@ -11,10 +11,13 @@
                     <v-text-field v-model="minAmountSearch" class="flex-child" label="Min Amount" type="number"></v-text-field>
 
             </v-form>
+            <v-btn style="background-color: darkgreen" append-icon="mdi-plus" class="mb-5" @click="showForm = true">Add New Transaction</v-btn>
         </v-card>
         <v-data-table v-model:page="page" v-model:items-per-page="itemsPerPage" :headers="headers" :items="filteredItems" class="elevation-1" multi-sort>
         </v-data-table>
-        {{ items }}
+        <v-dialog v-model="showForm" persistent>
+            <TransactionForm @close-form="showForm = false"></TransactionForm>
+        </v-dialog>
     </v-container>
 </template>
 
@@ -24,12 +27,14 @@ import { VContainer, VCard } from 'vuetify/components'
 import { VDataTable } from 'vuetify/lib/labs/components.mjs';
 import { getAllTransactions } from '../api/api'
 import { useCustomerStore } from '../stores/customerStore'
+import TransactionForm from '../components/TransactionForm.vue'
 export default defineComponent({
     name: 'Budgeting',
     components: {
     VContainer,
     VCard,
     VDataTable,
+    TransactionForm
 },
     data() {
         return {
@@ -81,6 +86,7 @@ export default defineComponent({
             categorySearch: [],
             minAmountSearch: '',
             maxAmountSearch: '',
+            showForm: false,
         }
     },
     computed: {
