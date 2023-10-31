@@ -1,6 +1,6 @@
 <template>
   <v-app>
-  <v-app-bar v-if="!this.$router.currentRoute.value.path.includes('/login')">
+  <v-app-bar v-if="!$router.currentRoute.value.path.includes('/login')">
   <v-app-bar-nav-icon append-icon="mdi-check-circle"></v-app-bar-nav-icon>
   </v-app-bar>
   <router-view />

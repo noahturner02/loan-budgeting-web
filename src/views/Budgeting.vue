@@ -16,7 +16,7 @@
         <v-data-table v-model:page="page" v-model:items-per-page="itemsPerPage" :headers="headers" :items="filteredItems" class="elevation-1" multi-sort>
         </v-data-table>
         <v-dialog v-model="showForm" persistent>
-            <TransactionForm @close-form="showForm = false"></TransactionForm>
+            <TransactionForm :categories="categories" @close-form="showForm = false"></TransactionForm>
         </v-dialog>
     </v-container>
 </template>
