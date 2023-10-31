@@ -41,3 +41,18 @@ export async function getAllTransactions(username) {
   });
 }
 
+export async function addNewTransaction(username, transaction) {
+  return axios.post("https://budgetingapplication.azurewebsites.net/trasactions/" + username + "/new", {
+    merchant: transaction.merchant,
+    transCategory: transaction.transCategory,
+    transAmount: transaction.transAmount,
+    transDate: transaction.transDate
+  })
+  .then(function (response) {
+    return response;
+  })
+  .catch(function (error) {
+    return error;
+  });
+}
+
