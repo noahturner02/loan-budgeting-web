@@ -23,6 +23,8 @@
 <script>
 import { useVuelidate } from '@vuelidate/core';
 import { required, minValue } from '@vuelidate/validators';
+import { addNewTransaction } from '../api/api'
+import { useCustomerStore } from '@/stores/customerStore';
 export default {
     name: 'TransactionForm',
     props: {
@@ -30,7 +32,8 @@ export default {
     },
     emits: ['closeForm'],
     setup() {
-        return { v$: useVuelidate() }
+        const customerStore = useCustomerStore();
+        return { v$: useVuelidate(), customerStore }
     },
     data() {
         return {
@@ -44,6 +47,10 @@ export default {
     computed: {
         posOrNeg() {
             return this.type === 'income' ? 'positive' : 'negative';
+        },
+        reformattedDate() {
+            const pieces = this.date.split('-');
+            return pieces[1] + '/' + pieces[2] + '/' + pieces[0];
         }
     },
     validations() {
@@ -56,9 +63,25 @@ export default {
         }
     },
     methods: {
-        submit() {
+        async submit() {
             const isFormCorrect = this.v$.$validate();
-            console.log(isFormCorrect);
+            if (isFormCorrect) {
+                if (this.type == 'spending') {
+                    this.amount *= -1;
+                }
+                const transResponse = await addNewTransaction(this.customerStore.$state.username, {
+                    merchant: this.merchant,
+                    transDate: this.reformattedDate,
+                    transCategory: this.category,
+                    transAmount: this.amount
+                });
+                if ('error' in transResponse) {
+                    console.log("unable to add transaction");
+                } else {
+                    console.log("Transaction successfully added!");
+                    this.$emit('closeForm');
+                }
+            }
         }
     }
 }
