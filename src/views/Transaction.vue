@@ -13,7 +13,7 @@
             </v-form>
             <v-btn style="background-color: darkgreen" append-icon="mdi-plus" class="mb-5" @click="showCreatePopUp()">Add New Transaction</v-btn>
         </v-card>
-        <v-data-table v-model:page="page" v-model:items-per-page="itemsPerPage" :headers="headers" :items="filteredItems" class="elevation-1" multi-sort>
+        <v-data-table v-model:page="page" v-model:items-per-page="itemsPerPage" :loading="loading" :headers="headers" :items="filteredItems" class="elevation-1" multi-sort>
             <template #[`item.actions`]="{ item }">
                 <v-icon @click="showEditPopUp(item)">mdi-pencil</v-icon>
                 <v-icon @click="showDeleteDialog(item)">mdi-delete</v-icon>
@@ -37,7 +37,7 @@ import { useCustomerStore } from '../stores/customerStore'
 import TransactionForm from '../components/TransactionForm.vue'
 import DeleteConfirmation from '../components/DeleteConfirmation.vue'
 export default defineComponent({
-    name: 'Budgeting',
+    name: 'Transaction',
     components: {
     VContainer,
     VCard,
@@ -105,6 +105,7 @@ export default defineComponent({
             deleteDialog: false,
             formAction: 'CREATE',
             editTransaction: {},
+            loading: false,
         }
     },
     computed: {
@@ -157,7 +158,9 @@ export default defineComponent({
         },
     },
     async mounted() {
+        this.loading = true;
         this.items = await this.getTransactions();
+        this.loading = false
     },
     methods: {
         async getTransactions() {

@@ -2,7 +2,7 @@ import { createWebHistory, createRouter } from "vue-router";
 import Sandbox from "./../views/Sandbox.vue";
 import LogInPage from "./../views/LogInPage";
 import DashBoard from "./../views/DashBoard.vue";
-import Budgeting from "./../views/Budgeting.vue";
+import Transaction from "./../views/Transaction.vue";
 import { useCustomerStore } from "@/stores/customerStore";
 
 const routes = [
@@ -27,9 +27,9 @@ const routes = [
     component: DashBoard
   },
   {
-    path: "/budgeting",
-    name: "Budgeting",
-    component: Budgeting
+    path: "/transactions",
+    name: "Transaction",
+    component: Transaction
   }
 ];
 
