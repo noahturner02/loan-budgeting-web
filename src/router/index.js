@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from "vue-router";
 import Sandbox from "./../views/Sandbox.vue";
 import LogInPage from "./../views/LogInPage";
 import DashBoard from "./../views/DashBoard.vue";
+import Transaction from "./../views/Transaction.vue";
 import { useCustomerStore } from "@/stores/customerStore";
 
 const routes = [
@@ -24,6 +25,11 @@ const routes = [
     path: "/dashboard",
     name: "DashBoard",
     component: DashBoard
+  },
+  {
+    path: "/transactions",
+    name: "Transaction",
+    component: Transaction
   }
 ];
 
