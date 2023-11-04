@@ -1,9 +1,18 @@
 <template>
   <v-app>
   <v-app-bar v-if="!$router.currentRoute.value.path.includes('/login')">
-  <v-app-bar-nav-icon append-icon="mdi-check-circle"></v-app-bar-nav-icon>
+    <v-app-bar-nav-icon :icon="showDrawer ? 'mdi-chevron-left' : 'mdi-chevron-right'" @click="toggleDrawer"></v-app-bar-nav-icon>
+    <v-app-bar-title class="text-lg-left">DownLoan</v-app-bar-title>
   </v-app-bar>
-  <router-view />
+  <v-navigation-drawer expand-on-hover rail :model-value="showDrawer">
+      <v-list>
+        <v-list-item class="text-lg-left" title="Dashboard" prepend-icon="mdi-view-dashboard-variant-outline" @click="$router.push({name: 'DashBoard'})"></v-list-item>
+        <v-list-item class="text-lg-left" title="Transactions" prepend-icon="mdi-cash-register" @click="$router.push({name: 'Transaction'})"></v-list-item>
+      </v-list>
+  </v-navigation-drawer>
+  <v-main class="pt-2 pt-md-0">
+    <router-view />
+  </v-main>
   </v-app>
 </template>
 
@@ -16,6 +25,16 @@ export default {
     VApp,
     VAppBar,
     RouterView
+  },
+  data() {
+    return {
+      showDrawer: true,
+    }
+  },
+  methods: {
+    toggleDrawer() {
+      this.showDrawer = !this.showDrawer;
+    }
   }
 };
 </script>
