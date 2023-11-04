@@ -4,7 +4,7 @@
     <v-app-bar-nav-icon :icon="showDrawer ? 'mdi-chevron-left' : 'mdi-chevron-right'" @click="toggleDrawer"></v-app-bar-nav-icon>
     <v-app-bar-title class="text-lg-left">DownLoan</v-app-bar-title>
   </v-app-bar>
-  <v-navigation-drawer expand-on-hover rail :model-value="showDrawer">
+  <v-navigation-drawer v-if="!$router.currentRoute.value.path.includes('/login')" expand-on-hover rail :model-value="showDrawer">
       <v-list>
         <v-list-item class="text-lg-left" title="Dashboard" prepend-icon="mdi-view-dashboard-variant-outline" @click="$router.push({name: 'DashBoard'})"></v-list-item>
         <v-list-item class="text-lg-left" title="Transactions" prepend-icon="mdi-cash-register" @click="$router.push({name: 'Transaction'})"></v-list-item>
