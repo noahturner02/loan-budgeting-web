@@ -16,11 +16,14 @@
         <v-data-table v-model:page="page" v-model:items-per-page="itemsPerPage" :headers="headers" :items="filteredItems" class="elevation-1" multi-sort>
             <template #[`item.actions`]="{ item }">
                 <v-icon @click="showEditPopUp(item)">mdi-pencil</v-icon>
-                <v-icon>mdi-delete</v-icon>
+                <v-icon @click="showDeleteDialog(item)">mdi-delete</v-icon>
             </template>
         </v-data-table>
         <v-dialog v-model="showForm" persistent>
             <TransactionForm :trans="editTransaction" :action="formAction" :categories="categories" @close-form="refreshTable()"></TransactionForm>
+        </v-dialog>
+        <v-dialog v-model="deleteDialog" persistent max-width="600">
+            <DeleteConfirmation :trans-i-d="deleteID" @close-form="refreshTable()"></DeleteConfirmation>
         </v-dialog>
     </v-container>
 </template>
@@ -32,13 +35,15 @@ import { VDataTable } from 'vuetify/lib/labs/components.mjs';
 import { getAllTransactions } from '../api/api'
 import { useCustomerStore } from '../stores/customerStore'
 import TransactionForm from '../components/TransactionForm.vue'
+import DeleteConfirmation from '../components/DeleteConfirmation.vue'
 export default defineComponent({
     name: 'Budgeting',
     components: {
     VContainer,
     VCard,
     VDataTable,
-    TransactionForm
+    TransactionForm,
+    DeleteConfirmation
 },
     data() {
         return {
@@ -97,6 +102,7 @@ export default defineComponent({
             minAmountSearch: '',
             maxAmountSearch: '',
             showForm: false,
+            deleteDialog: false,
             formAction: 'CREATE',
             editTransaction: {},
         }
@@ -185,6 +191,7 @@ export default defineComponent({
         },
         async refreshTable() {
             this.showForm = false;
+            this.deleteDialog = false;
             const customerStore = useCustomerStore();
             const transResponse = await getAllTransactions(customerStore.$state.username);
             if (!('error' in transResponse)) {
@@ -199,6 +206,10 @@ export default defineComponent({
         showCreatePopUp() {
             this.formAction = 'CREATE'
             this.showForm = true;
+        },
+        showDeleteDialog(transaction) {
+            this.deleteID = transaction.transID;
+            this.deleteDialog = true;
         }
     }
 });

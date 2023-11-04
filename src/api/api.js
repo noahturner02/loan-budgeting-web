@@ -68,4 +68,13 @@ export async function editTransaction(username, transaction) {
   });
 }
 
+export async function deleteTransaction(username, transID) {
+  return axios.delete("https://budgetingapplication.azurewebsites.net/transactions/" + username + "/delete/id=" + transID)
+  .then(function (response) {
+    return response;
+  })
+  .catch(function (error) {
+    return error;
+  });
+}
 
