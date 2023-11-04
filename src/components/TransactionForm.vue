@@ -1,7 +1,7 @@
 <template>
     <v-container>
     <v-card class="pa-5">
-        <v-card-title class="text-lg-center">Add Transaction</v-card-title>
+        <v-card-title class="text-lg-center">{{ capitalizedAction }} Transaction</v-card-title>
         <div class="d-flex justify-center" style="flex-direction: column; align-items: center;">
             <v-text-field v-model="merchant" class="form-field" label="Merchant" hint="Who did you pay?" :error-messages="v$.merchant.$errors.map((e) => e.$message)" @blur="v$.merchant.$touch"></v-text-field>
             <v-text-field v-model="date" class="form-field" label="Transaction Date" type="date" hint="When did this transaction take place?" :error-messages="v$.date.$errors.map((e) => e.$message)" @blur="v$.date.$touch"></v-text-field>
@@ -14,7 +14,7 @@
         </div>
         <div class="d-flex justify-center" style="gap: 100px">
             <v-btn size="x-large" style="background-color: firebrick" @click="$emit('closeForm')">Cancel</v-btn>
-            <v-btn size="x-large" style="background-color: darkgreen" @click="submit()">Add</v-btn>
+            <v-btn size="x-large" style="background-color: darkgreen" @click="submit()">{{ (action === 'CREATE' ? 'Add' : 'Edit') }}</v-btn>
         </div>
     </v-card>
     </v-container>
@@ -23,12 +23,27 @@
 <script>
 import { useVuelidate } from '@vuelidate/core';
 import { required, minValue } from '@vuelidate/validators';
-import { addNewTransaction } from '../api/api'
+import { addNewTransaction, editTransaction } from '../api/api'
 import { useCustomerStore } from '@/stores/customerStore';
 export default {
     name: 'TransactionForm',
     props: {
-        categories: Array
+        categories: {
+            type: Array,
+            default() {
+                return [];
+            }
+        },
+        action: {
+            type: String,
+            default: 'CREATE'
+        },
+        trans: {
+            type: Object,
+            default() {
+                return {};
+            }
+        }
     },
     emits: ['closeForm'],
     setup() {
@@ -52,6 +67,22 @@ export default {
         reformattedDate() {
             const pieces = this.date.split('-');
             return pieces[1] + '/' + pieces[2] + '/' + pieces[0];
+        },
+        JSDateFormat() {
+            const pieces = this.trans.transDate.split('/');
+            return pieces[2] + '-' + pieces[0] + '-' + pieces[1];
+        },
+        capitalizedAction() {
+            return this.action.substring(0, 1) + this.action.substring(1).toLowerCase();
+        }
+    },
+    mounted() {
+        if (this.action === 'EDIT') {
+            this.merchant = this.trans.merchant,
+            this.date = this.JSDateFormat,
+            this.category = this.trans.transCategory,
+            this.type = 'Spending',
+            this.amount = this.trans.transAmount
         }
     },
     validations() {
@@ -67,22 +98,28 @@ export default {
         async submit() {
             const isFormCorrect = this.v$.$validate();
             if (isFormCorrect) {
-                let signedAmount = this.amount;
-                if (this.type == 'spending') {
-                    signedAmount *= -1
+                let transResponse = {};
+                if (this.action === 'CREATE') {
+                    transResponse = await addNewTransaction(this.customerStore.$state.username, {
+                        cardNumber: this.fakeCardNumber,
+                        merchant: this.merchant,
+                        transDate: this.reformattedDate,
+                        transCategory: this.category,
+                        transAmount: this.amount
+                    });
+                } else if (this.action === 'EDIT') {
+                    transResponse = await editTransaction(this.customerStore.$state.username, {
+                        transID: this.trans.transID,
+                        merchant: this.merchant,
+                        transDate: this.reformattedDate,
+                        transCategory: this.category,
+                        transAmount: this.amount
+                    })
                 }
-                const transResponse = await addNewTransaction(this.customerStore.$state.username, {
-                    cardNumber: this.fakeCardNumber,
-                    merchant: this.merchant,
-                    transDate: this.reformattedDate,
-                    transCategory: this.category,
-                    transAmount: signedAmount
-                });
-                if ('error' in transResponse) {
-                    console.log("unable to add transaction");
-                } else {
-                    console.log("Transaction successfully added!");
+                if (!('error' in transResponse)) {
                     this.$emit('closeForm');
+                } else {
+                    console.log('uh oh...');
                 }
             }
         }

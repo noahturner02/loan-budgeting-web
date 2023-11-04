@@ -1,3 +1,4 @@
+
 const axios = require("axios");
 export async function customerLogin(username, password) {
   return axios
@@ -49,6 +50,16 @@ export async function addNewTransaction(username, transaction) {
     transAmount: transaction.transAmount,
     transDate: transaction.transDate
   })
+  .then(function (response) {
+    return response;
+  })
+  .catch(function (error) {
+    return error;
+  });
+}
+
+export async function editTransaction(username, transaction) {
+  return axios.put("https://budgetingapplication.azurewebsites.net/transactions/" + username + "/editing/id=" + transaction.transID + "?merchant=" + transaction.merchant + "&transCategory=" + transaction.transCategory + "&transDate=" + transaction.transDate + "&transAmount=" + transaction.transAmount)
   .then(function (response) {
     return response;
   })

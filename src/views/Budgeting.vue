@@ -11,12 +11,16 @@
                     <v-text-field v-model="minAmountSearch" class="flex-child" label="Min Amount" type="number"></v-text-field>
 
             </v-form>
-            <v-btn style="background-color: darkgreen" append-icon="mdi-plus" class="mb-5" @click="showForm = true">Add New Transaction</v-btn>
+            <v-btn style="background-color: darkgreen" append-icon="mdi-plus" class="mb-5" @click="showCreatePopUp()">Add New Transaction</v-btn>
         </v-card>
         <v-data-table v-model:page="page" v-model:items-per-page="itemsPerPage" :headers="headers" :items="filteredItems" class="elevation-1" multi-sort>
+            <template #[`item.actions`]="{ item }">
+                <v-icon @click="showEditPopUp(item)">mdi-pencil</v-icon>
+                <v-icon>mdi-delete</v-icon>
+            </template>
         </v-data-table>
         <v-dialog v-model="showForm" persistent>
-            <TransactionForm :categories="categories" @close-form="refreshTable()"></TransactionForm>
+            <TransactionForm :trans="editTransaction" :action="formAction" :categories="categories" @close-form="refreshTable()"></TransactionForm>
         </v-dialog>
     </v-container>
 </template>
@@ -59,6 +63,12 @@ export default defineComponent({
                     align: 'center',
                     key: 'transAmount'
                 },
+                {
+                    title: 'Actions',
+                    align: 'center',
+                    key: 'actions',
+                    sortable: false
+                }
             ],
             items: [],
             page: 1,
@@ -87,6 +97,8 @@ export default defineComponent({
             minAmountSearch: '',
             maxAmountSearch: '',
             showForm: false,
+            formAction: 'CREATE',
+            editTransaction: {},
         }
     },
     computed: {
@@ -178,7 +190,15 @@ export default defineComponent({
             if (!('error' in transResponse)) {
                 Object.assign(this.items, transResponse.data);
             }
-            console.log("hello");
+        },  
+        showEditPopUp(transaction) {
+            this.formAction = 'EDIT';
+            this.editTransaction = transaction;
+            this.showForm = true;
+        },
+        showCreatePopUp() {
+            this.formAction = 'CREATE'
+            this.showForm = true;
         }
     }
 });
