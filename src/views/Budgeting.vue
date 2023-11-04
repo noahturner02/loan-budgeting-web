@@ -16,7 +16,7 @@
         <v-data-table v-model:page="page" v-model:items-per-page="itemsPerPage" :headers="headers" :items="filteredItems" class="elevation-1" multi-sort>
         </v-data-table>
         <v-dialog v-model="showForm" persistent>
-            <TransactionForm :categories="categories" @close-form="showForm = false"></TransactionForm>
+            <TransactionForm :categories="categories" @close-form="refreshTable()"></TransactionForm>
         </v-dialog>
     </v-container>
 </template>
@@ -136,7 +136,7 @@ export default defineComponent({
                 })
             }
             return filteredItems;
-        }
+        },
     },
     async mounted() {
         this.items = await this.getTransactions();
@@ -170,6 +170,15 @@ export default defineComponent({
                 return 1;
             }
             return -1;
+        },
+        async refreshTable() {
+            this.showForm = false;
+            const customerStore = useCustomerStore();
+            const transResponse = await getAllTransactions(customerStore.$state.username);
+            if (!('error' in transResponse)) {
+                Object.assign(this.items, transResponse.data);
+            }
+            console.log("hello");
         }
     }
 });

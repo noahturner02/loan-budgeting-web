@@ -41,7 +41,8 @@ export default {
             date: undefined,
             category: undefined,
             type: undefined,
-            amount: undefined
+            amount: undefined,
+            fakeCardNumber: "4563 2456 4216 4322"
         }
     },
     computed: {
@@ -66,14 +67,16 @@ export default {
         async submit() {
             const isFormCorrect = this.v$.$validate();
             if (isFormCorrect) {
+                let signedAmount = this.amount;
                 if (this.type == 'spending') {
-                    this.amount *= -1;
+                    signedAmount *= -1
                 }
                 const transResponse = await addNewTransaction(this.customerStore.$state.username, {
+                    cardNumber: this.fakeCardNumber,
                     merchant: this.merchant,
                     transDate: this.reformattedDate,
                     transCategory: this.category,
-                    transAmount: this.amount
+                    transAmount: signedAmount
                 });
                 if ('error' in transResponse) {
                     console.log("unable to add transaction");

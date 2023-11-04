@@ -42,7 +42,8 @@ export async function getAllTransactions(username) {
 }
 
 export async function addNewTransaction(username, transaction) {
-  return axios.post("https://budgetingapplication.azurewebsites.net/trasactions/" + username + "/new", {
+  return axios.post("https://budgetingapplication.azurewebsites.net/transactions/" + username + "/new", {
+    cardNumber: transaction.cardNumber,
     merchant: transaction.merchant,
     transCategory: transaction.transCategory,
     transAmount: transaction.transAmount,
@@ -55,4 +56,5 @@ export async function addNewTransaction(username, transaction) {
     return error;
   });
 }
+
 
