@@ -3,6 +3,7 @@ import Sandbox from "./../views/Sandbox.vue";
 import LogInPage from "./../views/LogInPage";
 import DashBoard from "./../views/DashBoard.vue";
 import Transaction from "./../views/Transaction.vue";
+import Settings from "@/views/Settings.vue";
 import { useCustomerStore } from "@/stores/customerStore";
 
 const routes = [
@@ -30,6 +31,11 @@ const routes = [
     path: "/transactions",
     name: "Transaction",
     component: Transaction
+  },
+  {
+    path: "/settings",
+    name: "Settings",
+    component: Settings
   }
 ];
 
