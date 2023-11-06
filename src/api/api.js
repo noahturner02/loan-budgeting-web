@@ -78,3 +78,13 @@ export async function deleteTransaction(username, transID) {
   });
 }
 
+export async function editCustomer(account) {
+  return axios.put("https://budgetingapplication.azurewebsites.net/customers/update/" + account.username + "?password=" + account.password + "&firstName=" + account.firstName + "&lastName=" + account.lastName + "&phoneNumber=" + account.phoneNumber + "&email=" + account.email + "&address=" + account.address)
+  .then(function (response) {
+    return response;
+  })
+  .catch(function (error) {
+    return error;
+  });
+}
+

@@ -8,6 +8,7 @@
       <v-list>
         <v-list-item class="text-lg-left" title="Dashboard" prepend-icon="mdi-view-dashboard-variant-outline" @click="$router.push({name: 'DashBoard'})"></v-list-item>
         <v-list-item class="text-lg-left" title="Transactions" prepend-icon="mdi-cash-register" @click="$router.push({name: 'Transaction'})"></v-list-item>
+        <v-list-item class="text-lg-left" title="Settings" prepend-icon="mdi-cog" @click="$router.push({name: 'Settings'})"></v-list-item>
       </v-list>
   </v-navigation-drawer>
   <v-main class="pt-2 pt-md-0">
