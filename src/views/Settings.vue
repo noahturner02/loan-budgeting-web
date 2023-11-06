@@ -8,20 +8,26 @@
                 <v-text-field v-model="phoneNumber" :bg-color="(phoneNumber != customerStore.$state.phoneNumber) ? '#3f4a2d' : ''" persistent-placeholder :readonly="!editMode" label="Phone Number" style="width: 50%"></v-text-field>
                 <v-text-field v-model="email" :bg-color="(email != customerStore.$state.email) ? '#3f4a2d' : ''" persistent-placeholder :readonly="!editMode" label="Email" style="width: 50%"></v-text-field>
                 <v-text-field v-model="address" :bg-color="(address != customerStore.$state.address) ? '#3f4a2d' : ''" persistent-placeholder :readonly="!editMode" label="Address" style="width: 50%"></v-text-field>
-                <div class="d-flex justify-center" style="gap: 50px">
+                <div class="d-flex justify-center mb-3" style="gap: 50px">
                     <v-btn v-if="editMode" style="background-color: firebrick;" append-icon="mdi-delete" size="x-large" @click="cancelAction()">Cancel</v-btn>
                     <v-btn :loading="loading" style="background-color: darkgreen;" :append-icon="editMode ? 'mdi-check' : 'mdi-pencil'" size="x-large" @click="submitAction()">{{ editMode ? 'Submit' : 'Edit' }}</v-btn>
                 </div>
+                <v-btn size="large" type="text" elevation="0" @click="showPasswordDialog = true">Password Change</v-btn>
             </v-card-text>
         </v-card>
     </v-container>
+    <v-dialog v-model="showPasswordDialog" max-width="600">
+        <ChangePasswordDialog @close-form="showPasswordDialog = false"></ChangePasswordDialog>
+    </v-dialog>
 </template>
 <script>
 import { useCustomerStore } from '@/stores/customerStore';
 import { editCustomer } from '@/api/api';
 import { defineComponent } from 'vue';
+import ChangePasswordDialog from '@/components/ChangePasswordDialog.vue';
 export default defineComponent({
     name: 'Settings',
+    components: { ChangePasswordDialog },
     setup() {
         const customerStore = useCustomerStore();
         return { customerStore };
@@ -36,7 +42,8 @@ export default defineComponent({
             address: '',
             editMode: false,
             loading: false,
-        }
+            showPasswordDialog: false,
+        };
     },
     mounted() {
         this.resetFields();
@@ -72,7 +79,8 @@ export default defineComponent({
                 this.loading = false;
                 if ('error' in customerResponse) {
                     console.log(customerResponse);
-                } else {
+                }
+                else {
                     this.customerStore.$patch({
                         firstName: this.firstName,
                         lastName: this.lastName,
