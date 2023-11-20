@@ -4,6 +4,7 @@ import LogInPage from "./../views/LogInPage";
 import DashBoard from "./../views/DashBoard.vue";
 import Transaction from "./../views/Transaction.vue";
 import Settings from "@/views/Settings.vue";
+import DebtTracker from "./../views/DebtTracker.vue";
 import { useCustomerStore } from "@/stores/customerStore";
 
 const routes = [
@@ -36,6 +37,11 @@ const routes = [
     path: "/settings",
     name: "Settings",
     component: Settings
+  },
+  {
+    path: "/debttracker",
+    name: "DebtTracker",
+    component: DebtTracker
   }
 ];
 
