@@ -57,6 +57,7 @@ export default {
             category: undefined,
             type: undefined,
             amount: undefined,
+            signedAmount: undefined,
             fakeCardNumber: "4563 2456 4216 4322"
         }
     },
@@ -99,13 +100,17 @@ export default {
             const isFormCorrect = this.v$.$validate();
             if (isFormCorrect) {
                 let transResponse = {};
+                this.signedAmount = this.amount;
+                if (this.type == 'Spending') {
+                    this.signedAmount *= -1.0;
+                }
                 if (this.action === 'CREATE') {
                     transResponse = await addNewTransaction(this.customerStore.$state.username, {
                         cardNumber: this.fakeCardNumber,
                         merchant: this.merchant,
                         transDate: this.reformattedDate,
                         transCategory: this.category,
-                        transAmount: this.amount
+                        transAmount: this.signedAmount
                     });
                 } else if (this.action === 'EDIT') {
                     transResponse = await editTransaction(this.customerStore.$state.username, {
@@ -113,7 +118,7 @@ export default {
                         merchant: this.merchant,
                         transDate: this.reformattedDate,
                         transCategory: this.category,
-                        transAmount: this.amount
+                        transAmount: this.signedAmount
                     })
                 }
                 if (!('error' in transResponse)) {
