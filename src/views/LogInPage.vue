@@ -42,6 +42,9 @@
   <v-dialog v-model="showDialog" persistent>
     <SignupForm @exit="showDialog = false"></SignupForm>
   </v-dialog>
+  <v-overlay :model-value="loading" class="align-center justify-center">
+    <v-progress-circular indeterminate size="64"></v-progress-circular>
+  </v-overlay>
 </template>
 <script>
 import {
@@ -49,6 +52,8 @@ import {
   VDialog,
   VCard,
   VContainer,
+  VOverlay,
+  VProgressCircular,
   VTextField,
   VAlert
 } from "vuetify/lib/components/index.mjs";
@@ -65,6 +70,8 @@ export default {
     VDialog,
     SignupForm,
     VTextField,
+    VOverlay,
+    VProgressCircular,
     VCard,
     VContainer,
     VAlert
@@ -80,6 +87,7 @@ export default {
       username: undefined,
       password: undefined,
       showAlert: false,
+      loading: false,
     };
   },
   methods: {
@@ -90,11 +98,14 @@ export default {
       const isFormCorrect = await this.v$.$validate();
       if (isFormCorrect) {
         console.log("Calling login API...");
+        this.loading = true;
         const loginResponse = await customerLogin(this.username, this.password);
+        this.loading = false;
         if ('status' in loginResponse && loginResponse.status === 200) {
           this.customerStore.customerLogIn(loginResponse.data);
           this.showAlert = false;
           console.log(this.customerStore.$state);
+          this.$router.push({name: 'DashBoard'});
         } else {
           this.showAlert = true;
         }
