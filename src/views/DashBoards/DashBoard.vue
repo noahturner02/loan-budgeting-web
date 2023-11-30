@@ -120,7 +120,7 @@ export default {
           {
             label: "Percentage of Debt Paid",
             backgroundColor: "#85bb65",
-            data: [0.12, 0.2, 0.28, 0.42, 0.55, 0.6, 0.7, 0.36, 0.14, 0.83, 0.01, 0.43],
+            data: [5, 0.2, 0.28, 0.42, 0.55, 0.6, 0.7, 0.36, 0.14, 0.83, 0.01, 0.43],
             borderColor: 'rgb(255, 255, 255)',
             pointHoverBackgroundColor: 'rgb(255, 255, 255)',
           },

@@ -30,3 +30,13 @@ export async function customerRegister(customer) {
     return error
   });
 }
+
+export async function getAllTransactions(username){
+  return axios.get("https://budgetingapplication.azurewebsites.net/transactions/" + username)
+    .then(function (response) {
+      return response;
+    })
+    .catch(function (error) {
+      return error
+    });
+}
