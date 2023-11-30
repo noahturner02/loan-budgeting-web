@@ -1,8 +1,7 @@
-
 const axios = require("axios");
 export async function customerLogin(username, password) {
   return axios
-    .post("https://budgetingapplication.azurewebsites.net/customers/login", {
+    .post("https://budgetting-application-5bb4faab3241.herokuapp.com/customers/login", {
       username: username,
       password: password
     })
@@ -15,7 +14,7 @@ export async function customerLogin(username, password) {
 }
 
 export async function customerRegister(customer) {
-  return axios.post("https://budgetingapplication.azurewebsites.net/customers/registration", {
+  return axios.post("https://budgetting-application-5bb4faab3241.herokuapp.com/customers/registration", {
     firstName: customer.firstName,
     lastName: customer.lastName, 
     phoneNumber: customer.phoneNumber,
@@ -33,7 +32,7 @@ export async function customerRegister(customer) {
 }
 
 export async function getAllTransactions(username) {
-  return axios.get("https://budgetingapplication.azurewebsites.net/transactions/" + username)
+  return axios.get("https://budgetting-application-5bb4faab3241.herokuapp.com/transactions/" + username)
   .then(function (response) {
     return response;
   })
@@ -43,7 +42,7 @@ export async function getAllTransactions(username) {
 }
 
 export async function addNewTransaction(username, transaction) {
-  return axios.post("https://budgetingapplication.azurewebsites.net/transactions/" + username + "/new", {
+  return axios.post("https://budgetting-application-5bb4faab3241.herokuapp.com/transactions/" + username + "/new", {
     cardNumber: transaction.cardNumber,
     merchant: transaction.merchant,
     transCategory: transaction.transCategory,
@@ -59,7 +58,7 @@ export async function addNewTransaction(username, transaction) {
 }
 
 export async function editTransaction(username, transaction) {
-  return axios.put("https://budgetingapplication.azurewebsites.net/transactions/" + username + "/editing/id=" + transaction.transID + "?merchant=" + transaction.merchant + "&transCategory=" + transaction.transCategory + "&transDate=" + transaction.transDate + "&transAmount=" + transaction.transAmount)
+  return axios.put("https://budgetting-application-5bb4faab3241.herokuapp.com/transactions/" + username + "/editing/id=" + transaction.transID + "?merchant=" + transaction.merchant + "&transCategory=" + transaction.transCategory + "&transDate=" + transaction.transDate + "&transAmount=" + transaction.transAmount)
   .then(function (response) {
     return response;
   })
@@ -69,7 +68,7 @@ export async function editTransaction(username, transaction) {
 }
 
 export async function deleteTransaction(username, transID) {
-  return axios.delete("https://budgetingapplication.azurewebsites.net/transactions/" + username + "/delete/id=" + transID)
+  return axios.delete("https://budgetting-application-5bb4faab3241.herokuapp.com/transactions/" + username + "/delete/id=" + transID)
   .then(function (response) {
     return response;
   })
@@ -79,7 +78,7 @@ export async function deleteTransaction(username, transID) {
 }
 
 export async function editCustomer(account) {
-  return axios.put("https://budgetingapplication.azurewebsites.net/customers/update/" + account.username + "?password=" + account.password + "&firstName=" + account.firstName + "&lastName=" + account.lastName + "&phoneNumber=" + account.phoneNumber + "&email=" + account.email + "&address=" + account.address)
+  return axios.put("https://budgetting-application-5bb4faab3241.herokuapp.com/update/" + account.username + "?password=" + account.password + "&firstName=" + account.firstName + "&lastName=" + account.lastName + "&phoneNumber=" + account.phoneNumber + "&email=" + account.email + "&address=" + account.address)
   .then(function (response) {
     return response;
   })
@@ -88,3 +87,22 @@ export async function editCustomer(account) {
   });
 }
 
+export async function getBalanceByMonth(username, card, numOfMonths) {
+  return axios.get("https://budgetting-application-5bb4faab3241.herokuapp.com/transactions/" + username + "/balance-in-months-of-" + card + "?numOfMonths=" + numOfMonths)
+  .then(function (response) {
+    return response;
+  })
+  .catch(function (error) {
+    return error;
+  });
+}
+
+export async function getBalanceByDay(username, card, numOfDays) {
+  return axios.get("https://budgetting-application-5bb4faab3241.herokuapp.com/transactions/" + username + "/balance-in-days-of-" + card + "?numOfDays=" + numOfDays)
+  .then(function (response) {
+    return response;
+  })
+  .catch(function (error) {
+    return error;
+  });
+}
