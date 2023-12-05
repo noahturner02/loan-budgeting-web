@@ -119,10 +119,10 @@ export default defineComponent({
             const date = new Date();
             let labels = ['Now'];
             for (let i = 0; i < numOfDays; i++) {
-                labels.unshift(date.getDate());
+                labels.unshift((date.getMonth() + 1) + "/" + date.getDate());
                 date.setDate(date.getDate() - 1);
             }
-
+            return labels;
         },
         async reloadDataDays(numOfDays) {
             console.log(this.cardMap.get(this.currentCard));
