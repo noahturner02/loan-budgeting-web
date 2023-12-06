@@ -7,9 +7,9 @@
                     <v-select v-model="currentCard" :items="cardDisplays" class="flex-child"></v-select>
                     <v-btn class="flex-child mt-2" style="background-color: darkgreen" text="Add New Credit Card" prepend-icon="mdi-plus"></v-btn>
                 </div>
-                <v-card class="ma-5" style="background-color: white">
+                <v-card v-if="currentCard" class="ma-5" style="background-color: white">
                     <v-card-title class="text-h3 ma-5" style="color: #85bb65">{{ currentBalanceDollar }}</v-card-title>
-                    <Line v-if="currentCard" ref="chart" class="ma-5" :data="chartData" :options="chartOptions" />
+                    <Line ref="chart" class="ma-5" :data="chartData" :options="chartOptions" />
                 </v-card>
                 <div v-if="currentCard" class="d-flex justify-center" style="gap: 30px">
                     <v-btn size="x-large" @click="reloadDataDays(7)">1 Week</v-btn>
