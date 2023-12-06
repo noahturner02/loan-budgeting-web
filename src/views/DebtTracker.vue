@@ -126,8 +126,8 @@ export default defineComponent({
             const balanceResponse = await getBalanceByDay(this.customerStore.$state.username, this.cardMap.get(this.currentCard), numOfDays);
             if (!('error' in balanceResponse)) {
                 Object.assign(this.chartData.datasets[0].data, balanceResponse.data.map((num) => num * -1))
-                console.log(this.getDayLabels(balanceResponse.data.length));
-                Object.assign(this.chartData.labels, this.getDayLabels(balanceResponse.data.length));
+                //Object.assign(this.chartData.labels, this.getDayLabels(balanceResponse.data.length));
+                this.$refs.chart.chart.data.labels = this.getDayLabels(balanceResponse.data.length);
             }
             this.$refs.chart.chart.update();
         },
@@ -135,7 +135,8 @@ export default defineComponent({
             const balanceResponse = await getBalanceByMonth(this.customerStore.$state.username, this.cardMap.get(this.currentCard), numOfMonths);
             if (!('error' in balanceResponse)) {
                 Object.assign(this.chartData.datasets[0].data, balanceResponse.data.map((num) => num * -1));
-                Object.assign(this.chartData.labels, this.getMonthLabels(balanceResponse.data.length));
+                //Object.assign(this.chartData.labels, this.getMonthLabels(balanceResponse.data.length));
+                this.$refs.chart.chart.data.labels = this.getMonthLabels(balanceResponse.data.length);
             }
             this.$refs.chart.chart.update();
         }
