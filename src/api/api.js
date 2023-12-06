@@ -107,3 +107,13 @@ export async function getBalanceByDay(username, card, numOfDays) {
     return error;
   });
 }
+
+export async function getCurrentBalance(card) {
+  return axios.get("https://budgetting-application-5bb4faab3241.herokuapp.com/credit_card/current-balance-of-" + card)
+  .then(function (response) {
+    return response;
+  })
+  .catch(function (error) {
+    return error;
+  });
+}

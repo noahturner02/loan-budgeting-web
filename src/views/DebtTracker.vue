@@ -8,9 +8,10 @@
                     <v-btn class="flex-child mt-2" style="background-color: darkgreen" text="Add New Credit Card" prepend-icon="mdi-plus"></v-btn>
                 </div>
                 <v-card class="ma-5" style="background-color: white">
-                    <Line ref="chart" class="ma-5" :data="chartData" :options="chartOptions" />
+                    <v-card-title class="text-h3 ma-5" style="color: #85bb65">{{ currentBalanceDollar }}</v-card-title>
+                    <Line v-if="currentCard" ref="chart" class="ma-5" :data="chartData" :options="chartOptions" />
                 </v-card>
-                <div class="d-flex justify-center" style="gap: 30px">
+                <div v-if="currentCard" class="d-flex justify-center" style="gap: 30px">
                     <v-btn size="x-large" @click="reloadDataDays(7)">1 Week</v-btn>
                     <v-btn size="x-large" @click="reloadDataDays(30)">1 Month</v-btn>
                     <v-btn size="x-large" @click="reloadDataMonths(3)">3 Months</v-btn>
@@ -35,7 +36,7 @@ import {
   Filler
 } from "chart.js";
 import { Line } from "vue-chartjs";
-import { getBalanceByDay, getBalanceByMonth } from '@/api/api';
+import { getBalanceByDay, getBalanceByMonth, getCurrentBalance } from '@/api/api';
 import { useCustomerStore } from '@/stores/customerStore';
 ChartJS.register(
   CategoryScale,
@@ -75,6 +76,7 @@ export default defineComponent({
             currentCard: undefined,
             cardMap: new Map(),
             numToMonthMap: new Map([[0, "Jan"], [1, "Feb"], [2, "Mar"], [3, "Apr"], [4, "May"], [5, "Jun"], [6, "Jul"], [7, "Aug"], [8, "Sep"], [9, "Oct"], [10, "Nov"], [11, "Dec"]]),
+            currentBalance: 0
         }
     },
     computed: {
@@ -97,7 +99,22 @@ export default defineComponent({
             } },
         chartOptions() { return {
                 responsive: true,
-            } }
+            } },
+        currentBalanceDollar() {
+            if (this.currentBalance >= 0) {
+                return "$" +  Number(this.currentBalance.toFixed(2));
+            } else {
+                return "- $" + Number((this.currentBalance * -1).toFixed(2));;
+            }
+        }
+    },
+    watch: {
+        async currentCard() {
+            const balanceResponse = await getCurrentBalance(this.cardMap.get(this.currentCard));
+            if (!('error' in balanceResponse)) {
+                this.currentBalance = balanceResponse.data;
+            }
+        }
     },
     mounted() {
         this.cards.map((card) => {this.cardMap.set(this.cardDisplays[this.cards.indexOf(card)], card.cardNumber)})
@@ -125,18 +142,16 @@ export default defineComponent({
             console.log(this.cardMap.get(this.currentCard));
             const balanceResponse = await getBalanceByDay(this.customerStore.$state.username, this.cardMap.get(this.currentCard), numOfDays);
             if (!('error' in balanceResponse)) {
-                Object.assign(this.chartData.datasets[0].data, balanceResponse.data.map((num) => num * -1))
-                //Object.assign(this.chartData.labels, this.getDayLabels(balanceResponse.data.length));
-                this.$refs.chart.chart.data.labels = this.getDayLabels(balanceResponse.data.length);
+                this.$refs.chart.chart.data.datasets[0].data = balanceResponse.data.map((num) => num * -1)
+                this.$refs.chart.chart.data.labels = this.getDayLabels(balanceResponse.data.length - 1);
             }
             this.$refs.chart.chart.update();
         },
         async reloadDataMonths(numOfMonths) {
             const balanceResponse = await getBalanceByMonth(this.customerStore.$state.username, this.cardMap.get(this.currentCard), numOfMonths);
             if (!('error' in balanceResponse)) {
-                Object.assign(this.chartData.datasets[0].data, balanceResponse.data.map((num) => num * -1));
-                //Object.assign(this.chartData.labels, this.getMonthLabels(balanceResponse.data.length));
-                this.$refs.chart.chart.data.labels = this.getMonthLabels(balanceResponse.data.length);
+                this.$refs.chart.chart.data.datasets[0].data = balanceResponse.data.map((num) => num * -1);
+                this.$refs.chart.chart.data.labels = this.getMonthLabels(balanceResponse.data.length - 1);
             }
             this.$refs.chart.chart.update();
         }
