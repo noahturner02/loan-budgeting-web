@@ -8,7 +8,7 @@
                     <v-btn class="flex-child mt-2" style="background-color: darkgreen" text="Add New Credit Card" prepend-icon="mdi-plus"></v-btn>
                 </div>
                 <v-card class="ma-5" style="background-color: white">
-                    <Line ref="chart" class="ma-5" :data="chartData" :options="lineChartOptions" />
+                    <Line ref="chart" class="ma-5" :data="chartData" :options="chartOptions" />
                 </v-card>
                 <div class="d-flex justify-center" style="gap: 30px">
                     <v-btn size="x-large" @click="reloadDataDays(7)">1 Week</v-btn>
@@ -74,7 +74,14 @@ export default defineComponent({
             ],
             currentCard: undefined,
             cardMap: new Map(),
-            lineChartData: {
+            numToMonthMap: new Map([[0, "Jan"], [1, "Feb"], [2, "Mar"], [3, "Apr"], [4, "May"], [5, "Jun"], [6, "Jul"], [7, "Aug"], [8, "Sep"], [9, "Oct"], [10, "Nov"], [11, "Dec"]]),
+        }
+    },
+    computed: {
+        cardDisplays() {
+            return this.cards.map((card) => 'XXXX XXXX XXXX ' + card.cardNumber.split(' ')[3])
+        },
+        chartData() { return {
                 labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
                 datasets: [
                 {
@@ -87,20 +94,10 @@ export default defineComponent({
                     data: [10000, 1000, 100, 10, 1, 0],
                 },
                 ],
-            },
-            lineChartOptions: {
+            } },
+        chartOptions() { return {
                 responsive: true,
-            },
-            numToMonthMap: new Map([[0, "Jan"], [1, "Feb"], [2, "Mar"], [3, "Apr"], [4, "May"], [5, "Jun"], [6, "Jul"], [7, "Aug"], [8, "Sep"], [9, "Oct"], [10, "Nov"], [11, "Dec"]]),
-        }
-    },
-    computed: {
-        cardDisplays() {
-            return this.cards.map((card) => 'XXXX XXXX XXXX ' + card.cardNumber.split(' ')[3])
-        },
-        chartData: function() {
-            return this.lineChartData;
-        } 
+            } }
     },
     mounted() {
         this.cards.map((card) => {this.cardMap.set(this.cardDisplays[this.cards.indexOf(card)], card.cardNumber)})
@@ -117,7 +114,7 @@ export default defineComponent({
         },
         getDayLabels(numOfDays) {
             const date = new Date();
-            let labels = ['Now'];
+            let labels = [];
             for (let i = 0; i < numOfDays; i++) {
                 labels.unshift((date.getMonth() + 1) + "/" + date.getDate());
                 date.setDate(date.getDate() - 1);
@@ -128,16 +125,17 @@ export default defineComponent({
             console.log(this.cardMap.get(this.currentCard));
             const balanceResponse = await getBalanceByDay(this.customerStore.$state.username, this.cardMap.get(this.currentCard), numOfDays);
             if (!('error' in balanceResponse)) {
-                Object.assign(this.lineChartData.datasets[0].data, balanceResponse.data)
-                Object.assign(this.lineChartData.labels, this.getDayLabels(balanceResponse.data.length));
+                Object.assign(this.chartData.datasets[0].data, balanceResponse.data.map((num) => num * -1))
+                console.log(this.getDayLabels(balanceResponse.data.length));
+                Object.assign(this.chartData.labels, this.getDayLabels(balanceResponse.data.length));
             }
             this.$refs.chart.chart.update();
         },
         async reloadDataMonths(numOfMonths) {
             const balanceResponse = await getBalanceByMonth(this.customerStore.$state.username, this.cardMap.get(this.currentCard), numOfMonths);
             if (!('error' in balanceResponse)) {
-                Object.assign(this.lineChartData.datasets[0].data, balanceResponse.data);
-                Object.assign(this.lineChartData.labels, this.getMonthLabels(balanceResponse.data.length));
+                Object.assign(this.chartData.datasets[0].data, balanceResponse.data.map((num) => num * -1));
+                Object.assign(this.chartData.labels, this.getMonthLabels(balanceResponse.data.length));
             }
             this.$refs.chart.chart.update();
         }
