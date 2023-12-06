@@ -105,7 +105,7 @@ export default defineComponent({
     methods: {
         getMonthLabels(numOfMonths) {
             const date = new Date();
-            let labels = ['Now'];
+            let labels = [];
             for (let i = 0; i < numOfMonths; i++) {
                 labels.unshift(this.numToMonthMap.get(date.getMonth()));
                 date.setMonth(date.getMonth() - 1);
