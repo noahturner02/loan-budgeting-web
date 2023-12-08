@@ -113,10 +113,10 @@ export default {
         labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"],
         datasets: [
           {
-            label: "Percentage of Debt Paid",
-            backgroundColor: "#85bb65",
+            label: "Amount Spent",
+            backgroundColor: "#EA3C3C",
             data: [0.5, 0.2, 0.28, 0.42, 0.55, 0.6, 0.7, 0.36, 0.14, 0.83, 0.01, 0.43],
-            borderColor: 'rgb(255, 255, 255)',
+            borderColor: '#EA3C3C',
             pointHoverBackgroundColor: 'rgb(255, 255, 255)',
           },
         ],
