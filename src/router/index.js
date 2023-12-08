@@ -1,11 +1,12 @@
 import { createWebHistory, createRouter } from "vue-router";
 import Sandbox from "./../views/Sandbox.vue";
 import LogInPage from "./../views/LogInPage";
-import DashBoard from "./../views/DashBoard.vue";
 import Transaction from "./../views/Transaction.vue";
 import Settings from "@/views/Settings.vue";
 import DebtTracker from "./../views/DebtTracker.vue";
 import { useCustomerStore } from "@/stores/customerStore";
+import SignupForm from "./../components/SignupForm.vue";
+import DashBoard from "./../views/DashBoards/DashBoard.vue";
 
 const routes = [
   {
@@ -17,6 +18,11 @@ const routes = [
     path: "/sandbox",
     name: "Sandbox",
     component: Sandbox
+  },
+  {
+    path: "/signupform",
+    name: "SignupForm",
+    component: SignupForm
   },
   {
     path: "/login",
@@ -42,7 +48,7 @@ const routes = [
     path: "/debttracker",
     name: "DebtTracker",
     component: DebtTracker
-  }
+  },
 ];
 
 const router = createRouter({
