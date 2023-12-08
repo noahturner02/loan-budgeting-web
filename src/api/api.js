@@ -106,3 +106,26 @@ export async function getBalanceByDay(username, card, numOfDays) {
     return error;
   });
 }
+
+export async function getTotalTransactionAmountInDays(username, cardNumber, month, year){
+  return axios.get("https://budgetting-application-5bb4faab3241.herokuapp.com/transactions/" + username + "/amount-in-days-of-" + cardNumber + "-in-" + month + "-" + year)
+  .then(function (response) {
+    return response;
+  })
+  .catch(function (error) {
+    return error;
+  });
+}
+
+export async function getTotalTransactionAmountInMonths(username, cardNumber, year){
+  return axios.get("https://budgetting-application-5bb4faab3241.herokuapp.com/transactions/" + username + "/amount-in-months-of-" + cardNumber + "-in-" + year)
+  .then(function (response) {
+    return response;
+  })
+  .catch(function (error) {
+    return error;
+  });
+}
+
+
+//console.log("You're in api.js");
