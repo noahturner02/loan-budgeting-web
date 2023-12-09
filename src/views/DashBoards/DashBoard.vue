@@ -41,7 +41,7 @@
                 </button>
                 <button type="button" class="ma-1" @click= "updateGraph(7);">
                   <v-btn color="white">
-                    Aguest
+                    August
                   </v-btn>
                 </button>
                 <button type="button" class="ma-1" @click= "updateGraph(8);">
